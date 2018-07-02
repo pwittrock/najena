@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: helloworld1
+  name: helloworld1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: helloworld1
+  template:
+    metadata:
+      labels:
+        app: helloworld1
+    spec:
+      containers:
+      - image: pwittrock/najena:springboot
+        name: najena
+        env:
+        - name: MESSAGE
+          value: "Hello from app 1"
