@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: helloworld3
+  name: helloworld3
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: helloworld3
+  template:
+    metadata:
+      labels:
+        app: helloworld3
+    spec:
+      containers:
+      - image: pwittrock/gs-spring-boot-docker
+        name: najena
+        env:
+        - name: MESSAGE
+          value: "Hello from app 3"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: helloworld3
+  name: helloworld3
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: helloworld3
+  type: LoadBalancer

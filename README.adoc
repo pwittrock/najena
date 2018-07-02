@@ -1,49 +1,24 @@
 :spring_version: current
 :toc:
-:project_id: gs-rest-service
-:spring_version: current
-:spring_boot_version: 2.0.3.RELEASE
+:project_id: gs-spring-boot-docker
 :icons: font
 :source-highlighter: prettify
 
-This guide walks you through the process of creating a "hello world" link:/understanding/REST[RESTful web service] with Spring.
+This guide walks you through the process of building a https://docker.com[Docker] image for running a Spring Boot application.
 
 == What you'll build
 
-You'll build a service that will accept HTTP GET requests at:
-
-----
-http://localhost:8080/greeting
-----
-
-and respond with a link:/understanding/JSON[JSON] representation of a greeting:
-
-[source,json]
-----
-{"id":1,"content":"Hello, World!"}
-----
-
-You can customize the greeting with an optional `name` parameter in the query string:
-
-----
-http://localhost:8080/greeting?name=User
-----
-
-The `name` parameter value overrides the default value of "World" and is reflected in the response:
-
-[source,json]
-----
-{"id":1,"content":"Hello, User!"}
-----
-
+https://docker.com[Docker] is a Linux container management toolkit with a "social" aspect, allowing users to publish container images and consume those published by others. A Docker image is a recipe for running a containerized process, and in this guide we will build one for a simple Spring boot application.
 
 == What you'll need
-
 :java_version: 1.8
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/prereq_editor_jdk_buildtools.adoc[]
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/how_to_complete_this_guide.adoc[]
+If you are NOT using a Linux machine, you will need a virtualized server. By installing VirtualBox, other tools like the Mac's boot2docker, can seamlessly manage it for you. Visit https://www.virtualbox.org/wiki/Downloads[VirtualBox's download site] and pick the version for your machine. Download and install. Don't worry about actually running it.
 
+You will also need https://docker.com[Docker], which only runs on 64-bit machines. See https://docs.docker.com/installation/#installation for details on setting Docker up for your machine. Before proceeding further, verify you can run `docker` commands from the shell. If you are using boot2docker you need to run that *first*.
+
+include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/how_to_complete_this_guide.adoc[]
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-gradle.adoc[]
 
@@ -51,71 +26,10 @@ include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-sts.adoc[]
 
-
-
 [[initial]]
-== Create a resource representation class
+== Set up a Spring Boot app
 
-Now that you've set up the project and build system, you can create your web service.
-
-Begin the process by thinking about service interactions.
-
-The service will handle `GET` requests for `/greeting`, optionally with a `name` parameter in the query string. The `GET` request should return a `200 OK` response with JSON in the body that represents a greeting. It should look something like this:
-
-[source,json]
-----
-{
-    "id": 1,
-    "content": "Hello, World!"
-}
-----
-
-The `id` field is a unique identifier for the greeting, and `content` is the textual representation of the greeting.
-
-To model the greeting representation, you create a resource representation class. Provide a plain old java object with fields, constructors, and accessors for the `id` and `content` data:
-
-`src/main/java/hello/Greeting.java`
-[source,java]
-----
-include::complete/src/main/java/hello/Greeting.java[]
-----
-
-NOTE: As you see in steps below, Spring uses the http://wiki.fasterxml.com/JacksonHome[Jackson JSON] library to automatically marshal instances of type `Greeting` into JSON.
-
-Next you create the resource controller that will serve these greetings.
-
-
-== Create a resource controller
-
-In Spring's approach to building RESTful web services, HTTP requests are handled by a controller. These components are easily identified by the http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/bind/annotation/RestController.html[`@RestController`] annotation, and the `GreetingController` below handles `GET` requests for `/greeting` by returning a new instance of the `Greeting` class:
-
-`src/main/java/hello/GreetingController.java`
-[source,java]
-----
-include::complete/src/main/java/hello/GreetingController.java[]
-----
-
-This controller is concise and simple, but there's plenty going on under the hood. Let's break it down step by step.
-
-The `@RequestMapping` annotation ensures that HTTP requests to `/greeting` are mapped to the `greeting()` method.
-
-NOTE: The above example does not specify `GET` vs. `PUT`, `POST`, and so forth, because `@RequestMapping` maps all HTTP operations by default. Use `@RequestMapping(method=GET)` to narrow this mapping.
-
-`@RequestParam` binds the value of the query string parameter `name` into the `name` parameter of the `greeting()` method. If the `name` parameter is absent in the request, the `defaultValue` of "World" is used.
-
-The implementation of the method body creates and returns a new `Greeting` object with `id` and `content` attributes based on the next value from the `counter`, and formats the given `name` by using the greeting `template`.
-
-A key difference between a traditional MVC controller and the RESTful web service controller above is the way that the HTTP response body is created. Rather than relying on a link:/understanding/view-templates[view technology] to perform server-side rendering of the greeting data to HTML, this RESTful web service controller simply populates and returns a `Greeting` object. The object data will be written directly to the HTTP response as JSON.
-
-This code uses Spring 4's new http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/bind/annotation/RestController.html[`@RestController`] annotation, which marks the class as a controller where every method returns a domain object instead of a view. It's shorthand for `@Controller` and `@ResponseBody` rolled together.
-
-The `Greeting` object must be converted to JSON. Thanks to Spring's HTTP message converter support, you don't need to do this conversion manually. Because http://wiki.fasterxml.com/JacksonHome[Jackson 2] is on the classpath, Spring's http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/http/converter/json/MappingJackson2HttpMessageConverter.html[`MappingJackson2HttpMessageConverter`] is automatically chosen to convert the `Greeting` instance to JSON.
-
-
-== Make the application executable
-
-Although it is possible to package this service as a traditional link:/understanding/WAR[WAR] file for deployment to an external application server, the simpler approach demonstrated below creates a standalone application. You package everything in a single, executable JAR file, driven by a good old Java `main()` method. Along the way, you use Spring's support for embedding the link:/understanding/Tomcat[Tomcat] servlet container as the HTTP runtime, instead of deploying to an external instance.
-
+Now you can create a simple application.
 
 `src/main/java/hello/Application.java`
 [source,java]
@@ -123,61 +37,219 @@ Although it is possible to package this service as a traditional link:/understan
 include::complete/src/main/java/hello/Application.java[]
 ----
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/spring-boot-application.adoc[]
+The class is flagged as a `@SpringBootApplication` and as a `@RestController`, meaning it's ready for use by Spring MVC to handle web requests. `@RequestMapping` maps `/` to the `home()` method which just sends a 'Hello World' response.  The `main()` method uses Spring Boot's `SpringApplication.run()` method to launch an application.
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/build_an_executable_jar_subhead.adoc[]
+Now we can run the application without the Docker container (i.e. in the host OS).
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/build_an_executable_jar_with_both.adoc[]
+If you are using Gradle, execute:
 
-
-Logging output is displayed. The service should be up and running within a few seconds.
-
-
-== Test the service
-
-Now that the service is up, visit http://localhost:8080/greeting, where you see:
-
-[source,json]
+[subs="attributes"]
 ----
-{"id":1,"content":"Hello, World!"}
+./gradlew build && java -jar build/libs/{project_id}-0.1.0.jar
 ----
 
-Provide a `name` query string parameter with http://localhost:8080/greeting?name=User. Notice how the value of the `content` attribute changes from "Hello, World!" to "Hello User!":
+If you are using Maven, execute:
 
-[source,json]
+[subs="attributes"]
 ----
-{"id":2,"content":"Hello, User!"}
+./mvnw package && java -jar target/{project_id}-0.1.0.jar
 ----
 
-This change demonstrates that the `@RequestParam` arrangement in `GreetingController` is working as expected. The `name` parameter has been given a default value of "World", but can always be explicitly overridden through the query string.
+and go to http://localhost:8080[localhost:8080] to see your "Hello Docker World" message.
 
-Notice also how the `id` attribute has changed from `1` to `2`. This proves that you are working against the same `GreetingController` instance across multiple requests, and that its `counter` field is being incremented on each call as expected.
+== Containerize It
 
+Docker has a simple https://docs.docker.com/reference/builder/["Dockerfile"] file format that it uses to specify the "layers" of an image. So let's go ahead and create a Dockerfile in our Spring Boot project:
+
+`Dockerfile`
+[source,java]
+----
+include::complete/Dockerfile[]
+----
+
+This Dockerfile is very simple, but that's all you need to run a Spring Boot app with no frills: just Java and a JAR file. The project JAR file is `ADDed` to the container as "app.jar" and then executed in the `ENTRYPOINT`.
+
+NOTE: We added a `VOLUME` pointing to "/tmp" because that is where a Spring Boot application creates working directories for Tomcat by default. The effect is to create a temporary file on your host under "/var/lib/docker" and link it to the container under "/tmp". This step is optional for the simple app that we wrote here, but can be necessary for other Spring Boot applications if they need to actually write in the filesystem.
+
+NOTE: To reduce http://wiki.apache.org/tomcat/HowTo/FasterStartUp#Entropy_Source[Tomcat startup time] we added a system property pointing to "/dev/urandom" as a source of entropy.
+
+NOTE: if you are using boot2docker you need to run it *first* before you do anything with the Docker command line or with the build tools (it runs a daemon process that handles the work for you in a virtual machine).
+
+To build the image you can use some tooling for Maven or Gradle from the community (big thanks to https://github.com/palantir/gradle-docker[Palantir] and https://github.com/spotify/dockerfile-maven[Spotify] for making those tools available).
+
+=== Build a Docker Image with Maven
+In the Maven `pom.xml` you should add a new plugin like this (see https://github.com/spotify/dockerfile-maven[the plugin documentation] for more options):
+:
+
+`pom.xml`
+[source,xml,indent=0]
+----
+    <properties>
+  	    <docker.image.prefix>springio</docker.image.prefix>
+    </properties>
+    <build>
+        <plugins>
+include::complete/pom.xml[tag=plugin]
+        </plugins>
+    </build>
+----
+
+The configuration specifies 3 things:
+
+* The repository with the image name, which will end up here as `springio/gs-spring-boot-docker`
+* The name of the jar file, exposing the Maven configuration as a build argument for docker.
+* Optionally, the image tag, which ends up as latest if not specified.  It can be set to the artifact id if desired.
+
+IMPORTANT: Before proceeding with the following steps (which use Docker's CLI tools), make sure Docker is properly running by typing `docker ps`. If you get an error message, something may not be set up correctly. Using a Mac? Add `$(boot2docker shellinit 2> /dev/null)` to the bottom of your `.bash_profile` (or similar env-setting configuration file) and refresh your shell to ensure proper environment variables are configured.
+
+You can build a tagged docker image using the command line like this:
+
+----
+$ ./mvnw install dockerfile:build
+----
+
+And you can push the image to dockerhub with `./mvnw dockerfile:push`.
+
+NOTE: You don't have to push your newly minted Docker image to actually run it. Moreover the "push" command will fail if you aren't a member of the "springio" organization on Dockerhub. Change the build configuration and the command line to your own username instead of "springio" to make it actually work.
+
+NOTE: you can make `dockerfile:push` automatically run in the install or deploy lifecycle phases by adding it to the plugin configuration.
+
+`pom.xml`
+[source,xml,indent=0]
+----
+				<executions>
+					<execution>
+						<id>default</id>
+						<phase>install</phase>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+----
+
+=== Build a Docker Image with Gradle
+If you are using Gradle you need to add a new plugin like this:
+
+`build.gradle`
+[source,groovy]
+----
+buildscript {
+    ...
+    dependencies {
+        ...
+include::complete/build.gradle[tag=build]
+    }
+}
+
+group = 'springio'
+
+...
+include::complete/build.gradle[tag=plugin]
+
+include::complete/build.gradle[tag=task]
+----
+
+The configuration specifies 3 things:
+
+* the image name (or tag) is set up from the jar file properties, which will end up here as `springio/gs-spring-boot-docker`
+* the location of the jarfile
+* a build argument for docker pointing to the jar file
+
+You can build a tagged docker image and then push it to a remote repository with Gradle in one command:
+
+----
+$ ./gradlew build docker
+----
+
+=== After the Push
+
+A "docker push" will fail for you (unless you are part of the "springio" organization at Dockerhub), but if you change the configuration to match your own docker ID then it should succeed, and you will have a new tagged, deployed image.
+
+[NOTE]
+====
+You do NOT have to register with docker or publish anything to run a docker image. You still have a locally tagged image, and you can run it like this:
+
+----
+$ docker run -p 8080:8080 -t springio/gs-spring-boot-docker
+....
+2015-03-31 13:25:48.035  INFO 1 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
+2015-03-31 13:25:48.037  INFO 1 --- [           main] hello.Application                        : Started Application in 5.613 seconds (JVM running for 7.293)
+----
+====
+
+The application is then available on http://localhost:8080 (visit that and it says "Hello Docker World"). To make sure the whole process is really working, change the prefix from "springio" to something else (e.g. `${env.USER}`) and go through it again from the build through to the docker run.
+
+[NOTE]
+====
+When using a Mac with boot2docker, you typically see things like this at startup:
+
+[source]
+----
+Docker client to the Docker daemon, please set:
+    export DOCKER_CERT_PATH=/Users/gturnquist/.boot2docker/certs/boot2docker-vm
+    export DOCKER_TLS_VERIFY=1
+    export DOCKER_HOST=tcp://192.168.59.103:2376
+----
+
+To see the app, you must visit the IP address in DOCKER_HOST instead of localhost. In this case,
+http://192.168.59.103:8080, the public facing IP of the VM.
+====
+
+When it is running you can see in the list of containers, e.g:
+
+----
+$ docker ps
+CONTAINER ID        IMAGE                                   COMMAND                  CREATED             STATUS              PORTS                    NAMES
+81c723d22865        springio/gs-spring-boot-docker:latest   "java -Djava.secur..."   34 seconds ago      Up 33 seconds       0.0.0.0:8080->8080/tcp   goofy_brown
+----
+
+and to shut it down again you can `docker stop` with the container ID from the listing above (yours will be different):
+
+----
+$ docker stop 81c723d22865
+81c723d22865
+----
+
+If you like you can also delete the container (it is persisted in your filesystem under `/var/lib/docker` somewhere) when you are finished with it:
+
+----
+$ docker rm 81c723d22865
+----
+
+=== Using Spring Profiles
+Running your freshly minted Docker image with Spring profiles is as easy as passing an environment variable to the Docker run command
+
+----
+$ docker run -e "SPRING_PROFILES_ACTIVE=prod" -p 8080:8080 -t springio/gs-spring-boot-docker
+----
+
+or
+
+----
+$ docker run -e "SPRING_PROFILES_ACTIVE=dev" -p 8080:8080 -t springio/gs-spring-boot-docker
+----
+
+=== Debugging the application in a Docker container
+To debug the application  http://docs.oracle.com/javase/8/docs/technotes/guides/jpda/conninv.html#Invocation[JPDA Transport] can be used. So we'll treat the container like a remote server.
+To enable this feature pass a java agent settings in JAVA_OPTS variable and map agent's port
+ to localhost during a container run. With the https://www.docker.com/products/docker#/mac[Docker for Mac] there is limitation due to that we can't
+ access container by IP without https://github.com/docker/for-mac/issues/171[black magic usage].
+
+----
+$ docker run -e "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n" -p 8080:8080 -p 5005:5005 -t springio/gs-spring-boot-docker
+----
 
 == Summary
 
-Congratulations! You've just developed a RESTful web service with Spring.
+Congratulations! You've just created a Docker container for a Spring Boot app! Spring Boot apps run on port 8080 inside the container by default and we mapped that to the same port on the host using "-p" on the command line.
 
 == See Also
 
 The following guides may also be helpful:
 
-* https://spring.io/guides/gs/accessing-gemfire-data-rest/[Accessing GemFire Data with REST]
-* https://spring.io/guides/gs/accessing-mongodb-data-rest/[Accessing MongoDB Data with REST]
-* https://spring.io/guides/gs/accessing-data-mysql/[Accessing data with MySQL]
-* https://spring.io/guides/gs/accessing-data-rest/[Accessing JPA Data with REST]
-* https://spring.io/guides/gs/accessing-neo4j-data-rest/[Accessing Neo4j Data with REST]
-* https://spring.io/guides/gs/consuming-rest/[Consuming a RESTful Web Service]
-* https://spring.io/guides/gs/consuming-rest-angularjs/[Consuming a RESTful Web Service with AngularJS]
-* https://spring.io/guides/gs/consuming-rest-jquery/[Consuming a RESTful Web Service with jQuery]
-* https://spring.io/guides/gs/consuming-rest-restjs/[Consuming a RESTful Web Service with rest.js]
-* https://spring.io/guides/gs/securing-web/[Securing a Web Application]
-* https://spring.io/guides/tutorials/bookmarks/[Building REST services with Spring]
-* https://spring.io/guides/tutorials/react-and-spring-data-rest/[React.js and Spring Data REST]
+* https://spring.io/guides/gs/serving-web-content/[Serving Web Content with Spring MVC]
 * https://spring.io/guides/gs/spring-boot/[Building an Application with Spring Boot]
-* https://spring.io/guides/gs/testing-restdocs/[Creating API Documentation with Restdocs]
-* https://spring.io/guides/gs/rest-service-cors/[Enabling Cross Origin Requests for a RESTful Web Service]
-* https://spring.io/guides/gs/rest-hateoas/[Building a Hypermedia-Driven RESTful Web Service]
-* https://spring.io/guides/gs/circuit-breaker/[Circuit Breaker]
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/footer.adoc[]

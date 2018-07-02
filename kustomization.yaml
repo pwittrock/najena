@@ -1,0 +1,5 @@
+resources:
+- config/helloworld1.yaml
+- config/helloworld2.yaml
+- config/helloworld3.yaml
+
