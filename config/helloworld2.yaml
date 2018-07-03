@@ -19,7 +19,7 @@ spec:
         name: najena
         env:
         - name: MESSAGE
-          value: "Hello from app 2 - 3"
+          value: "Hello from app 2 - 4"
 ---
 apiVersion: v1
 kind: Service
