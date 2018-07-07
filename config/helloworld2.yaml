@@ -5,7 +5,7 @@ metadata:
     app: helloworld2
   name: helloworld2
 spec:
-  replicas: 2
+  replicas: 6
   selector:
     matchLabels:
       app: helloworld2
@@ -17,6 +17,14 @@ spec:
       containers:
       - image: pwittrock/gs-spring-boot-docker
         name: najena
+        minReadySeconds: 10
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
         env:
         - name: MESSAGE
           value: "Hello from app 2 - 4"
