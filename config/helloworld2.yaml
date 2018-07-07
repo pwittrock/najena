@@ -14,10 +14,10 @@ spec:
       labels:
         app: helloworld2
     spec:
+      minReadySeconds: 10
       containers:
       - image: pwittrock/gs-spring-boot-docker
         name: najena
-        minReadySeconds: 10
         resources:
           limits:
             memory: "64Mi"
