@@ -6,6 +6,7 @@ metadata:
   name: helloworld2
 spec:
   replicas: 6
+  minReadySeconds: 10
   selector:
     matchLabels:
       app: helloworld2
@@ -14,7 +15,6 @@ spec:
       labels:
         app: helloworld2
     spec:
-      minReadySeconds: 10
       containers:
       - image: pwittrock/gs-spring-boot-docker
         name: najena
