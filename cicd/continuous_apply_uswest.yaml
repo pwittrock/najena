@@ -1,0 +1,32 @@
+apiVersion: apply.k8s.io/v1beta1
+kind: ContinuousApply
+metadata:
+  name: uswest
+spec:
+  repo:
+    owner: pwittrock
+    repo: najena
+  user: firionavie-uswest
+  targets:
+  - path: config
+  - path: config2
+  match:
+    labels:
+    - "rollout"
+    assignee: "firionavie-uswest"
+  beforActions:
+    addLabels:
+    - "rollout-started-uswest"
+  afterActions:
+    removeLabels:
+    - "rollout-started-uswest"
+    removeAssignees:
+    - "firionavie-uswest"
+    addLabels:
+    - "rollout-done-uswest"
+  components:
+    gitCredentials:
+     key: "firionavie-uswest"
+     secret:
+       name: "applier-github-credentials"
+    serviceAccount: "firionavie"

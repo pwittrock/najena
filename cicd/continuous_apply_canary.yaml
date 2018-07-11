@@ -1,0 +1,36 @@
+apiVersion: apply.k8s.io/v1beta1
+kind: ContinuousApply
+metadata:
+  name: canary
+spec:
+  repo:
+    owner: pwittrock
+    repo: najena
+  user: firionavie-canary
+  targets:
+  - path: config
+  - path: config2
+  match:
+    labels:
+    - "rollout"
+    assignee:
+    - "firionavie-canary"
+  beforeActions:
+    addLabels:
+    - "rollout-started-canary"
+  afterActions:
+    removeAssignees:
+    - "firionavie-canary"
+    removeLabels:
+    - "rollout-started-canary"
+    addAssignees:
+    - "firionavie-uswest"
+    - "firionavie-useast"
+    addLabels:
+    - "rollout-done-canary"
+  components:
+    gitCredentials:
+     key: "firionavie-canary"
+     secret:
+       name: "applier-github-credentials"
+    serviceAccount: "firionavie"

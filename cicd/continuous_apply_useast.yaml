@@ -1,0 +1,21 @@
+apiVersion: apply.k8s.io/v1beta1
+kind: ContinuousApply
+metadata:
+  name: uswest
+spec:
+  repo:
+    owner: pwittrock
+    repo: najena
+  user: firionavie-useast
+  targets:
+  - path: config
+  - path: config2
+  match:
+    labels:
+    - "rollout"
+  components:
+    gitCredentials:
+     key: "firionavie-useast"
+     secret:
+       name: "firionavie-github"
+    serviceAccount: "firionavie"
