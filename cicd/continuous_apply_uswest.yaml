@@ -14,7 +14,7 @@ spec:
     labels:
     - "rollout"
     assignee: "firionavie-uswest"
-  beforActions:
+  beforeActions:
     addLabels:
     - "rollout-started-uswest"
   afterActions:
