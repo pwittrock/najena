@@ -13,21 +13,23 @@ spec:
   match:
     labels:
     - "rollout"
-    assignee:
-    - "firionavie-canary"
+    assignee: "firionavie-canary"
   beforeActions:
     addLabels:
     - "rollout-started-canary"
   afterActions:
-    removeAssignees:
-    - "firionavie-canary"
+    # mark rollout as done
     removeLabels:
     - "rollout-started-canary"
+    addLabels:
+    - "rollout-done-canary"
+    # unassign self, we are done
+    removeAssignees:
+    - "firionavie-canary"
+    # assign to rollout to uswest and useast
     addAssignees:
     - "firionavie-uswest"
     - "firionavie-useast"
-    addLabels:
-    - "rollout-done-canary"
   components:
     gitCredentials:
      key: "firionavie-canary"
