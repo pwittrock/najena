@@ -27,7 +27,7 @@ spec:
             cpu: "100m"
         env:
         - name: MESSAGE
-          value: "Hello from app 4 - 11"
+          value: "Hello from app 4 - 10"
 ---
 apiVersion: v1
 kind: Service
