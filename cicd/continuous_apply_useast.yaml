@@ -1,7 +1,7 @@
 apiVersion: apply.k8s.io/v1beta1
 kind: ContinuousApply
 metadata:
-  name: uswest
+  name: useast
 spec:
   repo:
     owner: pwittrock
@@ -13,9 +13,20 @@ spec:
   match:
     labels:
     - "rollout"
+    assignee: "firionavie-useast"
+  beforActions:
+    addLabels:
+    - "rollout-started-useast"
+  afterActions:
+    removeLabels:
+    - "rollout-started-useast"
+    removeAssignees:
+    - "firionavie-useast"
+    addLabels:
+    - "rollout-done-useast"
   components:
     gitCredentials:
      key: "firionavie-useast"
      secret:
-       name: "firionavie-github"
+       name: "applier-github-credentials"
     serviceAccount: "firionavie"
