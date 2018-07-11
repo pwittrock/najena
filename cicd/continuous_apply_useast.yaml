@@ -14,7 +14,7 @@ spec:
     labels:
     - "rollout"
     assignee: "firionavie-useast"
-  beforActions:
+  beforeActions:
     addLabels:
     - "rollout-started-useast"
   afterActions:
