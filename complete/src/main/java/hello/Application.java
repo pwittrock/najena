@@ -30,7 +30,7 @@ public class Application {
         // If there is a backend, call it
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject("http://" + backend, String.class).trim();
-        return message + " " +  version + " [" + result + "]\n";
+        return message + " [" +  version + "] [" + result + "]\n";
 
     }
 
