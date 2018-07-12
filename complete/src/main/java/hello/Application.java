@@ -24,11 +24,8 @@ public class Application {
     public String home() {
         // If there is no backend, return the message
         if (Strings.isEmpty(backend)) {
-            System.out.println("No backend");
-            return message + " " + version + "\n";
+            return version + "\n";
         }
-
-        System.out.println("Backend " + backend);
 
         // If there is a backend, call it
         RestTemplate restTemplate = new RestTemplate();
