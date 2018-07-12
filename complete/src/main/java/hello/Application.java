@@ -25,16 +25,21 @@ public class Application {
         // If there is no backend, return the message
         if (Strings.isEmpty(backend)) {
             System.out.println("No backend");
-            return message + " " + version;
+            return message + " " + version + "\n";
         }
 
         System.out.println("Backend " + backend);
 
         // If there is a backend, call it
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject("http://" + backend, String.class);
-        return message + " " +  version + " [" + result + "]";
+        String result = restTemplate.getForObject("http://" + backend, String.class).trim();
+        return message + " " +  version + " [" + result + "]\n";
 
+    }
+
+    @RequestMapping("/healthz")
+    public String healthz() {
+        return "ok";
     }
 
     public static void main(String[] args) {
