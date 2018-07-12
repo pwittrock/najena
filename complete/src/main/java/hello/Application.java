@@ -14,6 +14,9 @@ public class Application {
     @Value("${MESSAGE:Hello_World}")
     private String message;
 
+    @Value("${VERSION:unknown}")
+    private String version;
+
     @Value("${BACKEND_SERVICE:}")
     private String backend;
 
@@ -21,13 +24,16 @@ public class Application {
     public String home() {
         // If there is no backend, return the message
         if (Strings.isEmpty(backend)) {
-            return message;
+            System.out.println("No backend");
+            return message + " " + version;
         }
+
+        System.out.println("Backend " + backend);
 
         // If there is a backend, call it
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject("http://" + backend, String.class);
-        return message + " [" + result + "]";
+        return message + " " +  version + " [" + result + "]";
 
     }
 
