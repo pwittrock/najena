@@ -21,10 +21,10 @@ spec:
         resources:
           limits:
             memory: "512Mi"
-            cpu: "100m"
+            cpu: "300m"
           requests:
             memory: "512Mi"
-            cpu: "100m"
+            cpu: "300m"
         env:
         - name: BACKEND_SERVICE
           value: "backend-bar"
@@ -34,7 +34,7 @@ spec:
           httpGet:
             path: /healthz
             port: 8080
-          initialDelaySeconds: 60
+          initialDelaySeconds: 300
           periodSeconds: 5
         readinessProbe:
           httpGet:
