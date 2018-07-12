@@ -9,21 +9,6 @@ spec:
       - name: najena
         env:
         - name: MESSAGE
-          value: "Bar Canary Frontend 1 Response"
+          value: "Bar Canary Frontend 2 Response"
         - name: BACKEND_SERVICE
           value: "backend-bar"
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: frontend-bar
-  name: frontend-bar
-spec:
-  ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 8080
-  selector:
-    app: frontend-bar
-  type: LoadBalancer
