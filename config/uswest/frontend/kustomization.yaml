@@ -1,0 +1,5 @@
+bases:
+- ../../base/frontend
+patches:
+- frontend-foo.yaml
+- frontend-bar.yaml

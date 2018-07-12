@@ -1,0 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: backend-foo
+spec:
+  template:
+    spec:
+      containers:
+      - name: najena
+        env:
+        - name: MESSAGE
+          value: "Foo USEAST Backend 1 Response"

@@ -8,8 +8,8 @@ spec:
     repo: najena
   user: firionavie-canary
   targets:
-  - path: config
-  - path: config2
+  - path: config/canary/backend
+  - path: config/canary/frontend
   match:
     labels:
     - "rollout"

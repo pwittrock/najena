@@ -1,0 +1,4 @@
+resources:
+- backend-foo.yaml
+- backend-bar.yaml
+

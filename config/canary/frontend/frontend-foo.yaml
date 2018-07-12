@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: frontend-foo
+spec:
+  template:
+    spec:
+      containers:
+      - name: najena
+        env:
+        - name: MESSAGE
+          value: "Foo Canary Frontend 1 Response"
+        - name: BACKEND_SERVICE
+          value: "backend-foo"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: frontend-foo
+  name: frontend-foo
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: frontend-foo
+  type: LoadBalancer

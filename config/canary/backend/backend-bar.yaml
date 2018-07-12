@@ -1,0 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: backend-bar
+spec:
+  template:
+    spec:
+      containers:
+      - name: najena
+        env:
+        - name: MESSAGE
+          value: "Bar Canary Backend 1 Response"

@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: frontend-bar
+spec:
+  template:
+    spec:
+      containers:
+      - name: najena
+        env:
+        - name: MESSAGE
+          value: "Bar USEAST Frontend 1 Response"
+        - name: BACKEND_SERVICE
+          value: "backend-bar"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: frontend-bar
+  name: frontend-bar
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: frontend-bar
+  type: LoadBalancer

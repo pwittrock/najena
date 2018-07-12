@@ -1,0 +1,4 @@
+resources:
+- frontend-foo.yaml
+- frontend-bar.yaml
+
