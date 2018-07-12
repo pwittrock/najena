@@ -6,7 +6,7 @@ metadata:
   name: frontend-bar
 spec:
   replicas: 2
-  minReadySeconds: 10
+  minReadySeconds: 5
   selector:
     matchLabels:
       app: frontend-bar
