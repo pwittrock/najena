@@ -1,4 +1,7 @@
 resources:
 - frontend-foo.yaml
 - frontend-bar.yaml
-
+configMapGenerator:
+- name: frontend-config
+  literals:
+    - version="4"

@@ -9,4 +9,4 @@ spec:
       - name: najena
         env:
         - name: MESSAGE
-          value: "Bar USEAST Backend 1 Response"
+          value: "Bar USEAST Backend"

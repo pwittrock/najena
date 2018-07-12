@@ -1,4 +1,7 @@
 resources:
 - backend-foo.yaml
 - backend-bar.yaml
-
+configMapGenerator:
+- name: backend-config
+  literals:
+    - version="4"

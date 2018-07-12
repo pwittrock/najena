@@ -21,13 +21,16 @@ spec:
         resources:
           limits:
             memory: "512Mi"
-            cpu: "300m"
+            cpu: "500m"
           requests:
             memory: "512Mi"
-            cpu: "300m"
+            cpu: "500m"
         env:
         - name: VERSION
-          value: "3"
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: version
         livenessProbe:
           httpGet:
             path: /healthz

@@ -10,5 +10,3 @@ spec:
         env:
         - name: MESSAGE
           value: "Foo USEAST Frontend"
-        - name: BACKEND_SERVICE
-          value: "backend-foo"
