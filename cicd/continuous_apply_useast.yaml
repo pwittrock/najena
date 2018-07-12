@@ -8,8 +8,8 @@ spec:
     repo: najena
   user: firionavie-useast
   targets:
-  - path: config
-  - path: config2
+  - path: config/useast/backend
+  - path: config/useast/frontend
   match:
     labels:
     - "rollout"

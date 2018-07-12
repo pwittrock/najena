@@ -1,0 +1,5 @@
+bases:
+- ../../base/backend
+patches:
+- backend-foo.yaml
+- backend-bar.yaml

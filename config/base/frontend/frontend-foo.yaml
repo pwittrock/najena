@@ -2,18 +2,18 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    app: helloworld2
-  name: helloworld2
+    app: frontend-foo
+  name: frontend-foo
 spec:
-  replicas: 3
+  replicas: 2
   minReadySeconds: 10
   selector:
     matchLabels:
-      app: helloworld2
+      app: frontend-foo
   template:
     metadata:
       labels:
-        app: helloworld2
+        app: frontend-foo
     spec:
       containers:
       - image: pwittrock/gs-spring-boot-docker
@@ -27,19 +27,21 @@ spec:
             cpu: "100m"
         env:
         - name: MESSAGE
-          value: "Hello from app 2 - 11"
+          value: "Foo Frontend 1 Response"
+        - name: BACKEND_SERVICE
+          value: "backend-foo"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: helloworld2
-  name: helloworld2
+    app: frontend-foo
+  name: frontend-foo
 spec:
   ports:
   - port: 80
     protocol: TCP
     targetPort: 8080
   selector:
-    app: helloworld2
+    app: frontend-foo
   type: LoadBalancer

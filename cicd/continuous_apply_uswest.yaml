@@ -8,8 +8,8 @@ spec:
     repo: najena
   user: firionavie-uswest
   targets:
-  - path: config
-  - path: config2
+  - path: config/uswest/backend
+  - path: config/uswest/frontend
   match:
     labels:
     - "rollout"
