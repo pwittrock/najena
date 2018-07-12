@@ -9,6 +9,5 @@ spec:
       - name: najena
         env:
         - name: MESSAGE
-          value: "Bar Canary Frontend 2 Response"
-        - name: BACKEND_SERVICE
-          value: "backend-bar"
+          value: "Bar Canary Frontend"
+
