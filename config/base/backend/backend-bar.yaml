@@ -17,6 +17,7 @@ spec:
     spec:
       containers:
       - image: pwittrock/gs-spring-boot-docker
+        imagePullPolicy: "Always"
         name: najena
         resources:
           limits:
