@@ -27,7 +27,9 @@ spec:
             cpu: "100m"
         env:
         - name: MESSAGE
-          value: "Bar Backend 1 Response"
+          value: "Bar Backend Response"
+        - name: VERSION
+          value: "1"
 ---
 apiVersion: v1
 kind: Service

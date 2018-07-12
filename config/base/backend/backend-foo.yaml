@@ -28,6 +28,8 @@ spec:
         env:
         - name: MESSAGE
           value: "Foo Backend 1 Response"
+        - name: VERSION
+          value: "1"
 ---
 apiVersion: v1
 kind: Service

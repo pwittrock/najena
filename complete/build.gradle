@@ -1,9 +1,9 @@
 buildscript {
     repositories {
-      maven {
-        url "https://plugins.gradle.org/m2/"
-      }
-      mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
     }
     dependencies {
         classpath('org.springframework.boot:spring-boot-gradle-plugin:2.0.3.RELEASE')
@@ -11,6 +11,10 @@ buildscript {
         classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
 // end::build[]
     }
+}
+
+plugins {
+    id 'java'
 }
 
 apply plugin: 'java'
@@ -50,4 +54,15 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web") 
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
+group 'najena'
+version '1.0-SNAPSHOT'
 
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
