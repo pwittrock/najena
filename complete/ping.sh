@@ -15,6 +15,6 @@ while [  true ]; do
     curl http://104.196.12.217 # Foo
 #    curl http://35.196.5.106 # Bar
 
-    sleep 10
+    sleep 5
 done
 
