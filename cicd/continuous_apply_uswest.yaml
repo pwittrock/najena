@@ -20,8 +20,6 @@ spec:
   afterActions:
     removeLabels:
     - "rollout-started-uswest"
-    removeAssignees:
-    - "firionavie-uswest"
     addLabels:
     - "rollout-done-uswest"
   components:
