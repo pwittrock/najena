@@ -1,0 +1,10 @@
+repo:
+  repo: "najena"
+  owner: "pwittrock"
+user: "firionavie-issue-manager"
+  openIssue:
+    labels:
+    - "rollout"
+  openActions:
+    assignees:
+    - "firionavie-canary"

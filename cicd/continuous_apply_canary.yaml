@@ -23,9 +23,6 @@ spec:
     - "rollout-started-canary"
     addLabels:
     - "rollout-done-canary"
-    # unassign self, we are done
-    removeAssignees:
-    - "firionavie-canary"
     # assign to rollout to uswest and useast
     addAssignees:
     - "firionavie-uswest"

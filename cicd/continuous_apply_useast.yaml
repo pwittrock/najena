@@ -20,8 +20,6 @@ spec:
   afterActions:
     removeLabels:
     - "rollout-started-useast"
-    removeAssignees:
-    - "firionavie-useast"
     addLabels:
     - "rollout-done-useast"
   components:
