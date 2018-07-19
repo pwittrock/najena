@@ -1,0 +1,4 @@
+configMapGenerator:
+- name: config
+  literals:
+    - version="33"
