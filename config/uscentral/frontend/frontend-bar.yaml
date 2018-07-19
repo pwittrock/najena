@@ -1,0 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: frontend-bar
+spec:
+  template:
+    spec:
+      containers:
+      - name: najena
+        env:
+        - name: MESSAGE
+          value: "Bar CENTRAL Frontend"
