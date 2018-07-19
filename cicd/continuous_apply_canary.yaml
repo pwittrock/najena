@@ -23,10 +23,6 @@ spec:
     - "rollout-started-canary"
     addLabels:
     - "rollout-done-canary"
-    # assign to rollout to uswest and useast
-    addAssignees:
-    - "firionavie-uswest"
-    - "firionavie-useast"
   components:
     gitCredentials:
      key: "firionavie-canary"
