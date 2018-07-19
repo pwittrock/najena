@@ -1,51 +1,56 @@
-repo:
-  repo: najena
-  owner: pwittrock
-user: firionavie-issue-manager
-label: rollout
-openIssue:
-  labels:
-  - rollout
-openActions:
-  addAssignees:
-  - firionavie-canary
-transitions:
-- name: canary
-  match:
+apiVersion: apply.k8s.io/v1beta1
+kind: IssueManager
+metadata:
+  name: canary
+spec:
+  repo:
+    repo: najena
+    owner: pwittrock
+  user: firionavie-issue-manager
+  label: rollout
+  openIssue:
     labels:
-    - "rollout-done-canary"
-  actions:
+    - rollout
+  openActions:
     addAssignees:
-    - "firionavie-uswest"
-    - "firionavie-useast"
-closeIssue:
-  labels:
-  - rollout-done-canary
-  - rollout-done-uswest
-  - rollout-done-useast
-components:
+    - firionavie-canary
+  transitions:
+  - name: canary
+    match:
+      labels:
+      - "rollout-done-canary"
+    actions:
+      addAssignees:
+      - "firionavie-uswest"
+      - "firionavie-useast"
+  closeIssue:
+    labels:
+    - rollout-done-canary
+    - rollout-done-uswest
+    - rollout-done-useast
+  components:
     gitCredentials:
-     key: "firionavie-issue-manager"
-     secret:
-       name: "manager-github-credentials"
+      key: "firionavie-issue-manager"
+      secret:
+        name: "manager-github-credentials"
     serviceAccount: "firionavie-manager"
-statusReporters:
-- name: canary
-  inProgressLabels:
-  - rollout-started-canary
-  completeLabels:
-  - rollout-done-canary
-- name: uswest
-  inProgressLabels:
-  - rollout-started-uswest
-  completeLabels:
-  - rollout-done-uswest
-  waitFor:
-  - canary
-- name: useast
-  inProgressLabels:
-  - rollout-started-useast
-  completeLabels:
-  - rollout-done-useast
-  waitFor:
-  - canary
+  statusReporters:
+  - name: canary
+    inProgressLabels:
+    - rollout-started-canary
+    completeLabels:
+    - rollout-done-canary
+  - name: uswest
+    inProgressLabels:
+    - rollout-started-uswest
+    completeLabels:
+    - rollout-done-uswest
+    waitFor:
+    - canary
+  - name: useast
+    inProgressLabels:
+    - rollout-started-useast
+    completeLabels:
+    - rollout-done-useast
+    waitFor:
+    - canary
