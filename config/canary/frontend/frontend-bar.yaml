@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: frontend-bar
 spec:
+  replicas: 1
   template:
     spec:
       containers:
