@@ -4,4 +4,4 @@ resources:
 configMapGenerator:
 - name: backend-config
   literals:
-    - version="36"
+    - version="37"
