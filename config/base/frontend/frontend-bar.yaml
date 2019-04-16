@@ -5,7 +5,7 @@ metadata:
     app: frontend-bar
   name: frontend-bar
 spec:
-  replicas: 2
+  replicas: 8
   minReadySeconds: 5
   selector:
     matchLabels:
@@ -22,7 +22,7 @@ spec:
         resources:
           limits:
             memory: "512Mi"
-            cpu: "500m"
+            cpu: "600m"
           requests:
             memory: "512Mi"
             cpu: "500m"
